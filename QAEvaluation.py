@@ -33,6 +33,7 @@ if __name__ == "__main__":
   qa = QASystem(database=db)
 
   f1_scores = []
+  em_scores_f1 = []
   em_scores = []
   for question, answer in tzip(df.question, df.answer):
     prediction = qa.pipe.run(
@@ -40,15 +41,19 @@ if __name__ == "__main__":
     )
 
     em = compute_em(prediction['answers'][0].answer, answer['text'])
-    print(em)
-    if em == 1:
-      f1_scores.append(1)
+    em_scores.append(em)
+
+    f1 = f1_scores.append(compute_f1(prediction['answers'][0].answer, answer['text']))
+    if f1 == 1:
+      em_scores_f1.append(1)
     else:
-      f1_scores.append(compute_f1(prediction['answers'][0].answer, answer['text']))
+      em_scores_f1.append(0)
 
   scores = pd.DataFrame()
   scores['em'] = em_scores
   scores['f1'] = f1_scores
+  scores['em_f1'] = em_scores_f1
 
   print(scores.em.mean())
   print(scores.f1.mean())
+  print(scores.em_f1.mean())
