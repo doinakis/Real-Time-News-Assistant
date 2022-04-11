@@ -30,21 +30,25 @@ def xquad_data_prepare(data_path):
   contexts = []
   questions = []
   answers = []
-
+  document_ids =[]
+  id = 0
   for data in squad['data']:
     for paragraph in data['paragraphs']:
       context  = paragraph['context']
+      document_id = f'document{id}.json'
+      id += 1
       for qa in paragraph['qas']:
         question = qa['question']
         for answer in qa['answers']:
           contexts.append(context)
           questions.append(question)
           answers.append(answer)
+          document_ids.append(document_id)
 
   df['content'] = contexts
   df['question'] = questions
   df['answer'] = answers
-
+  df['doc_id'] = document_ids
   id = 0
   for content in df.content.unique():
     tmp_dict = {

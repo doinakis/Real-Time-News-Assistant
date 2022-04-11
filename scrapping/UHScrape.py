@@ -18,6 +18,11 @@ def scrape_init(directory, category, start_page, pages=10):
   :param start_page: From which page to start scrapping
   :param pages: How many pages to scrap. If the pages variable is set to -1  it scrapes all the articles
   '''
+
+  if not os.path.exists(f"{directory}/scrapped_links.json"):
+    with open(os.path.join(f"{directory}", 'scrapped_links.json'), 'w') as fp:
+      fp.write("[]")
+
   with open(f"{directory}/scrapped_links.json") as fp:
     scrapped_links = json.load(fp)
 
@@ -135,7 +140,10 @@ def scrape_article(url, category, directory):
 if __name__ == "__main__":
   parser = argparse.ArgumentParser(description='unboxholics scrapping script.')
   parser.add_argument('--directory', required=True, help='the directory to store the scrapped articles to')
+  parser.add_argument('--category', required=True, help='category to scrape')
+  parser.add_argument('--start_page', required=True, help='the page to start the scrapping from', type=int)
+  parser.add_argument('--stop_page', required=True, help='the last page to scrap', type=int)
   args = parser.parse_args()
   if not os.path.exists(args.directory):
     os.makedirs(args.directory)
-  print('hi')
+  scrape_init(args.directory, args.category, args.start_page, args.stop_page)
