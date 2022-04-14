@@ -93,6 +93,9 @@ def compute_f1(prediction, truth):
   :returns:
     F1: The f1 score between 2 strings
   '''
+  if compute_em(prediction,truth) == 1:
+    return 1
+
   pred_tokens = strip_accents_and_lowercase(prediction).split()
   truth_tokens = strip_accents_and_lowercase(truth).split()
 

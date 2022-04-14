@@ -170,7 +170,7 @@ class QASystem():
     self.pipe.add_node(component=self.retriever, name="ESRetriever", inputs=["ClassificationNode"])
     self.pipe.add_node(component=self.reader, name="Reader", inputs=["ESRetriever"])
 
-  def pipeline(self, query, top_retriever=5, top_reader=5):
+  def pipeline(self, query, top_retriever=1, top_reader=1):
     '''
     Asks a question to the system
     :param query: The input question to the system

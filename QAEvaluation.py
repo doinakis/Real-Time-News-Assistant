@@ -24,7 +24,9 @@ if __name__ == "__main__":
   parser = argparse.ArgumentParser(description='QASystem Evaluation script.')
   parser.add_argument('--xquad_file', required=True, help='path to the dataset')
   parser.add_argument('--reader_model', required=True, help='reader model to be used for the system evaluation')
-  parser.add_argument('--retriever_model', required=True, help='retriver model to be used. (currently support only for bm25 and tfidf)')
+  parser.add_argument('--retriever_model', required=True, help='retriever model to be used. (currently support only for bm25 and tfidf)')
+  parser.add_argument('--top_k_retriever', required=False, default=1, help='number of documents the retriever pass to the reader')
+  parser.add_argument('--top_k_reader', required=False, default=1, help='number of best predicted answers returned from the reader')
 
   args = parser.parse_args()
 
@@ -35,37 +37,29 @@ if __name__ == "__main__":
   df, dicts = xquad_data_prepare(args.xquad_file)
   db.add_documents(dicts=dicts)
 
-  qa = QASystem(database=db, reader_model=args.reader_model)
+  qa = QASystem(database=db, reader_model=args.reader_model, retriever=args.retriever_model)
 
   f1_scores = []
-  em_scores_f1 = []
   em_scores = []
   retriever_em = []
 
   for question, answer, doc_id in tzip(df.question, df.answer, df.doc_id):
     prediction = qa.pipe.run(
-      query=f"{question}", params={"ESRetriever": {"top_k": 1}, "Reader": {"top_k": 1}}
+      query=f"{question}", params={"ESRetriever": {"top_k": args.top_k_retriever}, "Reader": {"top_k": args.top_k_reader}}
     )
 
     retriever_em.append(int(prediction['documents'][0].meta['name'] == doc_id))
-    em = compute_em(prediction['answers'][0].answer, answer['text'])
-    em_scores.append(em)
-
-    f1 = compute_f1(prediction['answers'][0].answer, answer['text'])
-    f1_scores.append(f1)
-
-    if f1 == 1:
-      em_scores_f1.append(1)
-    else:
-      em_scores_f1.append(0)
+    em_scores.append(compute_em(prediction['answers'][0].answer, answer['text']))
+    f1_scores.append(compute_f1(prediction['answers'][0].answer, answer['text']))
 
   scores = pd.DataFrame()
   scores['em'] = em_scores
   scores['f1'] = f1_scores
-  scores['em_f1'] = em_scores_f1
   scores['retriever_em'] = retriever_em
 
+  print(f'QA System Info')
+  print(f'Retriever model: {args.retriever_model} top_k: {args.top_k_retriever}')
+  print(f'Reader model: {args.reader_model} top_k: {args.top_k_reader}')
   print(f'Exact Match: {scores.em.mean()}')
   print(f'F1-Score: {scores.f1.mean()}')
-  print(f'EM using F1: {scores.em_f1.mean()}')
   print(f'{args.retriever_model} Accuracy: {scores.retriever_em.mean()}')
