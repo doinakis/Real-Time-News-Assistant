@@ -5,87 +5,87 @@ stories:
 - story: happy path 1
   steps:
   - user: |
-      hello there!
+      γεια !
     intent: greet
   - action: utter_greet
   - user: |
-      amazing
+      τελεια
     intent: mood_great
   - action: utter_happy
 
 - story: happy path 2
   steps:
   - user: |
-      hello there!
+      γεια!
     intent: greet
   - action: utter_greet
   - user: |
-      amazing
+      τελεια
     intent: mood_great
   - action: utter_happy
   - user: |
-      bye-bye!
+      αντιο!
     intent: goodbye
   - action: utter_goodbye
 
 - story: sad path 1
   steps:
   - user: |
-      hello
+      γεια
     intent: greet
   - action: utter_greet
   - user: |
-      not good
+      δεν ειμαι καλα
     intent: mood_unhappy
   - action: utter_cheer_up
   - action: utter_did_that_help
   - user: |
-      yes
+      ναι
     intent: affirm
   - action: utter_happy
 
 - story: sad path 2
   steps:
   - user: |
-      hello
+      γεια
     intent: greet
   - action: utter_greet
   - user: |
-      not good
+      δεν ειμαι καλα
     intent: mood_unhappy
   - action: utter_cheer_up
   - action: utter_did_that_help
   - user: |
-      not really
+      οχι ιδιαιτερα
     intent: deny
   - action: utter_goodbye
 
 - story: sad path 3
   steps:
   - user: |
-      hi
+      γεια
     intent: greet
   - action: utter_greet
   - user: |
-      very terrible
+      χαλια
     intent: mood_unhappy
   - action: utter_cheer_up
   - action: utter_did_that_help
   - user: |
-      no
+      οχι
     intent: deny
   - action: utter_goodbye
 
 - story: say goodbye
   steps:
   - user: |
-      bye-bye!
+      αντιο!
     intent: goodbye
   - action: utter_goodbye
 
-- story: bot challenge
+- story: bot question
   steps:
   - user: |
-      are you a bot?
-    intent: bot_challenge
-  - action: utter_iamabot
+      Πόσους πόντους παρέδωσε η άμυνα των Πάνθερς;
+    intent: bot_answer_question
+  - action: bot_answer_question

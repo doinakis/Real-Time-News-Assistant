@@ -27,7 +27,7 @@ responses:
   - text: "Αντίο"
 
   utter_answer_question:
-  - text: "Ποσο ηρθε ο παοκ χθες?"
+  - text: "Πόσους πόντους παρέδωσε η άμυνα των Πάνθερς;"
 
   # utter_iamabot:
   # - text: "I am a bot, powered by Rasa."
@@ -35,6 +35,7 @@ responses:
 actions:
   - bot_answer_question
 
+# TODO add action to refresh the database
 
 session_config:
   session_expiration_time: 60

@@ -5,7 +5,8 @@
 @Version :   0.0.1
 @Contact :   doinakis.michalis@gmail.com
 @License :   (C)Copyright 2022 Michalis Doinakis
-@Desc    :   None
+@Desc    :   This file contains classes to initialize a Database
+             and a Question Answering System.
 '''
 from haystack.schema import Document
 from haystack.pipelines import Pipeline
@@ -15,6 +16,7 @@ from haystack.nodes.preprocessor.preprocessor import PreProcessor
 from haystack.nodes import ElasticsearchRetriever, TfidfRetriever, FARMReader
 from haystack.document_stores import ElasticsearchDocumentStore
 import os, json
+
 
 class ClassificationNode(BaseComponent):
   '''
