@@ -52,7 +52,7 @@ class ActionAnswerQuestion(Action):
 
     return []
 
-def db_update(dispatcher, db):
+def db_update(db):
   '''
   Update database on demand
   :param dispatcher: Class to provide messages to the user
@@ -92,13 +92,15 @@ class ActionDatabaseUpdate(Action):
     logger.info(f"Conneting to the database.")
     self.db = Database()
     self.db.connect()
+    self.db_update_thread = Thread(target=db_update, args=(self.db,))
 
   def run(self, dispatcher: CollectingDispatcher,
           tracker: Tracker,
           domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
-
-    dispatcher.utter_message(text="Αναβάθμιση της βάσης στο παρασκήνιο.")
-    db_update_thread = Thread(target=db_update, args=(dispatcher, self.db))
-    db_update_thread.start()
+    if not self.db_update_thread.is_alive():
+      dispatcher.utter_message(text="Αναβάθμιση της βάσης στο παρασκήνιο.")
+      self.db_update_thread.start()
+    else:
+      dispatcher.utter_message(text="Η βάση αναβαθμίζεται αυτή τη στιγμή.")
 
     return []
