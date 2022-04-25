@@ -18,7 +18,8 @@ def scrape_init(directory, category, start_page=0, pages=10):
   :param start_page: From which page to start scrapping
   :param pages: How many pages to scrap
   '''
-
+  if not os.path.exists(directory):
+    os.makedirs(directory)
   if not os.path.exists(f"{directory}/scrapped_links.json"):
     with open(os.path.join(f"{directory}", 'scrapped_links.json'), 'w') as fp:
       fp.write("[]")
@@ -49,6 +50,7 @@ def scrape_init(directory, category, start_page=0, pages=10):
 
   soup = BeautifulSoup(page.content, "html.parser")
 
+  articles = []
   for i in range(start_page, pages+1):
     page = requests.get(f"{url}/?pages={i}")
     print(f"{url}?p={i}")
@@ -62,14 +64,14 @@ def scrape_init(directory, category, start_page=0, pages=10):
         print("Already in")
       else:
         scrapped_links.append(link)
-        scrape_article(link, category, directory)
+        articles.append(scrape_article(url=link, category=category, directory=directory))
         print("wait")
         with open(f"{directory}/scrapped_links.json", 'w') as file:
           json.dump(scrapped_links, file)
         time.sleep(3)
     time.sleep(2)
 
-  return
+  return articles
 
 
 def article_list(soup):
@@ -116,7 +118,7 @@ def scrape_article(url, category, directory):
   with open(f"{directory}/{json_name}.json", 'w') as file:
     json.dump(dict, file)
 
-  return
+  return dict
 
 
 if __name__ == "__main__":
@@ -126,6 +128,4 @@ if __name__ == "__main__":
   parser.add_argument('--start_page', required=True, help='the page to start the scrapping from', type=int)
   parser.add_argument('--stop_page', required=True, help='the last page to scrap', type=int)
   args = parser.parse_args()
-  if not os.path.exists(args.directory):
-    os.makedirs(args.directory)
   scrape_init(args.directory, args.category, args.start_page, args.stop_page)

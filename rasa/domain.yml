@@ -8,6 +8,7 @@ intents:
   - mood_great
   - mood_unhappy
   - answer_question
+  - db_update
 
 responses:
   utter_greet:
@@ -29,11 +30,15 @@ responses:
   utter_answer_question:
   - text: "Πόσους πόντους παρέδωσε η άμυνα των Πάνθερς;"
 
+  utter_db_update:
+  - text: "Λήψη νέων άρθων"
+
   # utter_iamabot:
   # - text: "I am a bot, powered by Rasa."
 
 actions:
   - bot_answer_question
+  - bot_db_update
 
 # TODO add action to refresh the database
 
