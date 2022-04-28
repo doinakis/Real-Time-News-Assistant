@@ -44,6 +44,7 @@ Real Time News Assistant for greek news.
   note = {Accessed: 2022-04-28}
 }
 ```
+```
  @misc{haystack docs,
   title={Haystack docs},
   url={https://haystack.deepset.ai/},
@@ -52,3 +53,4 @@ Real Time News Assistant for greek news.
   month={Dec},
   note = {Accessed: 2022-04-28}
 }
+```
