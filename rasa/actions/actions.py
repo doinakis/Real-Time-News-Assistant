@@ -7,22 +7,24 @@
 @License :   (C)Copyright 2022 Michalis Doinakis
 @Desc    :   This file contains custom actions for the RASA bot. https://rasa.com/docs/rasa/custom-actions
 '''
-import logging, os, sys
+import os, sys
+import threading
 sys.path.append(os.path.realpath(os.path.join(os.path.dirname(__file__), '..', '..')))
-
 from typing import Any, Text, Dict, List
+from threading import Thread, Lock
 from rasa_sdk import Action, Tracker
 from rasa_sdk.executor import CollectingDispatcher
 from qasystem.QASystem import *
 from scrape.UHScrape import scrape_uh
 from scrape.CNNScrape import scrape_cnn
 from scrape.SPORT24Scrape import scrape_sport24
-from threading import Thread
-
+import logging
 
 logging.basicConfig(format="%(asctime)s %(message)s", datefmt="%m/%d/%Y %I:%M:%S %p")
 logging.basicConfig(level='DEBUG')
 logger = logging.getLogger(__name__)
+
+_dbLock = threading.Lock()
 
 class ActionAnswerQuestion(Action):
   '''
@@ -34,6 +36,7 @@ class ActionAnswerQuestion(Action):
   def __init__(self) -> None:
     logger.debug(f"Conneting to the database.")
     self.db = Database()
+    logger.info(self.db)
     self.db.connect()
     logger.debug(f"Initializting QASystem.")
     self.qa = QASystem(database=self.db)
@@ -43,9 +46,10 @@ class ActionAnswerQuestion(Action):
           domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
 
     question = tracker.latest_message["text"]
-    answer = self.qa.pipe.run(
-      query=f"{question}", params={"ESRetriever": {"top_k": 3}, "Reader": {"top_k": 1}}
-    )
+    with _dbLock:
+      answer = self.qa.pipe.run(
+        query=f"{question}", params={"ESRetriever": {"top_k": 3}, "Reader": {"top_k": 1}}
+      )
 
     # TODO add support for no answer found. Optimize the probability threshold.
     dispatcher.utter_message(text=answer['answers'][0].answer)
@@ -77,9 +81,11 @@ def db_update(db):
   sport24_thread.join()
 
   articles = articles_uh + articles_cnn + articles_sport24
-  db.add_documents(articles)
+  with _dbLock:
+    db.add_documents(articles)
 
   logger.info('Update of the database complete')
+
 
 class ActionDatabaseUpdate(Action):
   '''
@@ -91,12 +97,14 @@ class ActionDatabaseUpdate(Action):
   def __init__(self) -> None:
     logger.info(f"Conneting to the database.")
     self.db = Database()
+    logger.info(self.db)
     self.db.connect()
     self.db_update_thread = Thread(target=db_update, args=(self.db,))
 
   def run(self, dispatcher: CollectingDispatcher,
           tracker: Tracker,
           domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+
     if not self.db_update_thread.is_alive():
       dispatcher.utter_message(text="Αναβάθμιση της βάσης στο παρασκήνιο.")
       self.db_update_thread.start()

@@ -16,6 +16,7 @@ from haystack.nodes.preprocessor.preprocessor import PreProcessor
 from haystack.nodes import ElasticsearchRetriever, TfidfRetriever, FARMReader
 from haystack.document_stores import ElasticsearchDocumentStore
 import os, json
+from utils.utils import Singleton
 
 
 class ClassificationNode(BaseComponent):
@@ -80,7 +81,7 @@ class MergeNode(BaseComponent):
     return (output, "output_1")
 
 
-class Database():
+class Database(metaclass=Singleton):
   '''
   The class that handles the connection to the document store.
   '''
@@ -112,12 +113,14 @@ class Database():
 
     :param dicts: List of dictonaries containing the documents
     '''
+
     docs = self.processor.process(dicts)
     self.document_store.write_documents(docs)
 
   def add_documets_folder(self, folder_path):
     '''
     Add documents from folder
+
     :param folder_path: The path to the folder containing the documents
     '''
     dicts = []
@@ -134,6 +137,7 @@ class Database():
 
     :param urls: List of urls to crawl content from
     '''
+
     #TODO add custom crawlers
     dicts = self.crawler.run(url=urls, crawler_depth=0, overwrite_existing_files=True, return_documents=True)
     self.add_documents(dicts[0]['documents'])
@@ -148,6 +152,7 @@ class Database():
 class QASystem():
   '''
   The class containing the Question Answering System
+
   :param database: A database class
   :param classifier: A classifier class
   :param reader_model: String containing the name of a Huggingface model or the path to a local one
