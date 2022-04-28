@@ -34,3 +34,21 @@ Real Time News Assistant for greek news.
   urldate    = {2021-12-09},
 }
 ```
+```
+ @misc{rasa_2021,
+  title={Open source conversational AI},
+  url={https://rasa.com/},
+  journal={Rasa},
+  year={2021},
+  month={Nov},
+  note = {Accessed: 2022-04-28}
+}
+```
+ @misc{haystack docs,
+  title={Haystack docs},
+  url={https://haystack.deepset.ai/},
+  journal={Haystack Docs},
+  year={2021},
+  month={Dec},
+  note = {Accessed: 2022-04-28}
+}
