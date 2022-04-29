@@ -26,8 +26,7 @@ class ClassificationNode(BaseComponent):
   outgoing_edges = 1
 
   def __init__(self, classifier):
-    if classifier is None:
-      self.classifier = None
+    self.classifier = classifier
 
   def run(self, query):
     '''
@@ -36,15 +35,15 @@ class ClassificationNode(BaseComponent):
     :returns:
         Touple with the dictionary with the classified query and the outgoing edge nubmer
     '''
-    if self.classifier is None:
+    _, label = self.classifier.classify(query)
+    if label is None:
       output = {
         "query": query
       }
     else:
-      query_class = self.classifier.classify(query)
       output = {
         "query": query,
-        "filters": {"category": [f"{query_class}"]}
+        "filters": {"category": [f"{label}"]}
       }
     return (output, "output_1")
 

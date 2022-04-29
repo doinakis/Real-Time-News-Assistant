@@ -10,11 +10,11 @@
              and F1-Score for the QA Task. The readers Accuracy and F1-Score are
              affected and limited by the retrivers performance.
 '''
-
 import os
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'  # or any {'0', '1', '2'}
 from qasystem.QASystem import *
 from evaluation.xquadevaluation import *
+from classifier.Classifier import *
 import argparse
 from tqdm.contrib import tzip
 
@@ -23,6 +23,7 @@ from tqdm.contrib import tzip
 if __name__ == "__main__":
   parser = argparse.ArgumentParser(description='QASystem Evaluation script.')
   parser.add_argument('--xquad_file', required=True, help='path to the dataset')
+  parser.add_argument('--classifier', required=False, help='what type of query classification to use. (currently supported tfidf and Bert')
   parser.add_argument('--reader_model', required=True, help='reader model to be used for the system evaluation')
   parser.add_argument('--retriever_model', required=True, help='retriever model to be used. (currently support only for bm25 and tfidf)')
   parser.add_argument('--top_k_retriever', required=False, default=1, help='number of documents the retriever pass to the reader')
@@ -36,6 +37,8 @@ if __name__ == "__main__":
 
   df, dicts = xquad_data_prepare(args.xquad_file)
   db.add_documents(dicts=dicts)
+
+  classifier = Classifier(args.classifier)
 
   qa = QASystem(database=db, reader_model=args.reader_model, retriever=args.retriever_model)
 
