@@ -32,7 +32,7 @@ def scrape_cnn(directory, num_of_articles=10, pages=100, articles=[]):
 
   articles += scrape_category(directory=directory, category='politiki', num_of_articles=num_of_articles, pages=pages)
 
-  logger.info(f"CNN scrape complete.")
+  logger.info('CNN scrape complete.')
 
   return articles
 

@@ -14,7 +14,7 @@ def scrape_init(directory, category, start_page=0, pages=10):
   '''
   Scrape sport related articles from www.sport24.gr
   :param directory: The directory to store the scrapped articles
-  :param category: The article category (Currently supported politiki)
+  :param category: The article category (Currently supporing politiki)
   :param start_page: From which page to start scrapping
   :param pages: How many pages to scrap
   '''

@@ -81,7 +81,7 @@ if __name__ == '__main__':
   for epoch in range(epochs):
     avg_loss = 0
     model.train()
-    progress = tqdm(train_loader, desc="finetuning")
+    progress = tqdm(train_loader, desc='finetuning')
     for step, batch in enumerate(progress):
       batch = tuple(x.to(device) for x in batch)
       input_ids, input_masks, segment_ids, label_ids = batch

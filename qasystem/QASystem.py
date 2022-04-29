@@ -187,11 +187,11 @@ class QASystem():
         prediction: Pipelines prediction
     '''
     prediction = self.pipe.run(
-      query=f"{query}", params={"ESRetriever": {"top_k": top_retriever}, "Reader": {"top_k": top_reader}}
+      query=f'{query}', params={"ESRetriever": {"top_k": top_retriever}, "Reader": {"top_k": top_reader}}
     )
 
     return prediction
 
 
-if __name__== "__main__":
-  print("Main function")
+if __name__== '__main__':
+  print('Main function')

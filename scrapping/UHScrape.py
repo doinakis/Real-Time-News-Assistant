@@ -14,7 +14,7 @@ def scrape_init(directory, category, start_page, pages=10):
   '''
   Scrape sport related articles from www.unboxholics.com
   :param directory: The directory to store the scrapped articles
-  :param category: The article category (Currently supported tech, movies, gamings)
+  :param category: The article category (Currently supporting tech, movies, gamings)
   :param start_page: From which page to start scrapping
   :param pages: How many pages to scrap. If the pages variable is set to -1 it scrapes all the articles
   '''

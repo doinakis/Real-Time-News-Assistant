@@ -31,7 +31,7 @@ def scrape_uh(directory, num_of_articles=10, articles=[]):
   articles += scrape_category(directory=directory, category='movies', num_of_articles=num_of_articles)
   articles += scrape_category(directory=directory, category='gaming', num_of_articles=num_of_articles)
 
-  logger.info(f"UH scrape complete.")
+  logger.info('UH scrape complete.')
 
   return articles
 

@@ -325,7 +325,7 @@ def read_from_database(db_path):
     elif doc["meta"]["category"] == "politiki":
       categories.append(4)
     else:
-      logger.info("Category ommited")
+      logger.info('Category ommited.')
 
   test_texts = []
   test_categories = []
@@ -342,7 +342,7 @@ def read_from_database(db_path):
     elif doc["meta"]["category"] == "politiki":
       test_categories.append(4)
     else:
-      logger.info("Category ommited")
+      logger.info('Category ommited.')
 
   train_texts, val_texts, train_categories, val_categories = train_test_split(texts, categories, test_size=0.2, shuffle=False)
   train_labels = np.asarray(train_categories)
@@ -359,10 +359,10 @@ if __name__ == '__main__':
   parser.add_argument('--db_path', required= True, help='path to the stored documents')
   args = parser.parse_args()
 
-  logger.info("Preprocess documents.")
+  logger.info('Preprocess documents.')
   data, test_data = read_from_database(db_path=args.db_path)
 
-  logger.info("Train the tfidf model.")
+  logger.info('Train the tfidf model.')
   model_path = f'/home/doinakis/github/Real-Time-News-Assistant/classifier/models/tfidf/{args.model_name}'
   model, val_acc, val_loss = train_ngram_model(model_path,
                                               data,
@@ -373,8 +373,8 @@ if __name__ == '__main__':
                                               units=64,
                                               dropout_rate=0.2)
 
-  logger.info("Training complete.")
-  logger.info("Starting evaluation.")
+  logger.info('Training complete.')
+  logger.info('Starting evaluation.')
   with open(f"{model_path}-vec-sec.bin", 'rb') as file:
     vec_sec_struct = pickle.load(file)
 

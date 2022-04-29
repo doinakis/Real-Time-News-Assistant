@@ -25,7 +25,7 @@ class BertClassifier():
     return
 
   def classify(self, query):
-    inputs = self.tokenizer(query, return_tensors="pt")
+    inputs = self.tokenizer(query, return_tensors='pt')
     output = self.model(**inputs)
     prediction = output.logits.detach().cpu().numpy().argmax(axis=-1)[0]
     return prediction
@@ -38,14 +38,14 @@ class TFIDFClassifier():
   def __init__(self, classifier_path):
     with os.scandir(classifier_path) as it:
       for entry in it:
-        if entry.name.endswith(".bin") and entry.is_file():
+        if entry.name.endswith('.bin') and entry.is_file():
           vec_sel_struct = pickle.load(open(entry.path, 'rb'))
           self.vectorizer, self.selector = vec_sel_struct['vectorizer'], vec_sel_struct['selector']
-        elif entry.name.endswith(".h5") and entry.is_file():
+        elif entry.name.endswith('.h5') and entry.is_file():
           self.model = load_model(entry.path)
 
   def classify(self, query):
-    input_text = np.asarray(self.vectorizer.transform([f"{query}"]).todense())
+    input_text = np.asarray(self.vectorizer.transform([f'{query}']).todense())
     input_vec = self.selector.transform(input_text).astype('float32')
     prediction = np.argmax(self.model.predict(input_vec), axis=-1)[0]
     return prediction

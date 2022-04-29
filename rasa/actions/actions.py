@@ -34,11 +34,11 @@ class ActionAnswerQuestion(Action):
     return "bot_answer_question"
 
   def __init__(self) -> None:
-    logger.debug(f"Conneting to the database.")
+    logger.debug(f'Conneting to the database.')
     self.db = Database()
     logger.info(self.db)
     self.db.connect()
-    logger.debug(f"Initializting QASystem.")
+    logger.debug(f'Initializting QASystem.')
     self.qa = QASystem(database=self.db)
 
   def run(self, dispatcher: CollectingDispatcher,
@@ -48,7 +48,7 @@ class ActionAnswerQuestion(Action):
     question = tracker.latest_message["text"]
     with _dbLock:
       answer = self.qa.pipe.run(
-        query=f"{question}", params={"ESRetriever": {"top_k": 3}, "Reader": {"top_k": 1}}
+        query=f'{question}', params={"ESRetriever": {"top_k": 3}, "Reader": {"top_k": 1}}
       )
 
     # TODO add support for no answer found. Optimize the probability threshold.
@@ -68,9 +68,9 @@ def db_update(db):
   articles_uh = []
   articles_cnn = []
   articles_sport24 = []
-  uh_thread = Thread(target=scrape_uh, args=("./on-demand-db/", 1, articles_uh))
-  cnn_thread = Thread(target=scrape_cnn, args=("./on-demand-db/", 1, 10, articles_cnn))
-  sport24_thread = Thread(target=scrape_sport24, args=("./on-demand-db/", 1, 10, articles_sport24))
+  uh_thread = Thread(target=scrape_uh, args=('./on-demand-db/', 1, articles_uh))
+  cnn_thread = Thread(target=scrape_cnn, args=('./on-demand-db/', 1, 10, articles_cnn))
+  sport24_thread = Thread(target=scrape_sport24, args=('./on-demand-db/', 1, 10, articles_sport24))
 
   uh_thread.start()
   cnn_thread.start()
@@ -95,7 +95,7 @@ class ActionDatabaseUpdate(Action):
     return "bot_db_update"
 
   def __init__(self) -> None:
-    logger.info(f"Conneting to the database.")
+    logger.info('Conneting to the database.')
     self.db = Database()
     logger.info(self.db)
     self.db.connect()

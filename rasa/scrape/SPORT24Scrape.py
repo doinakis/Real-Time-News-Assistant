@@ -30,7 +30,7 @@ def scrape_sport24(directory, num_of_articles=10, pages=100, articles=[]):
   articles += scrape_category(directory=directory, category='tennis', num_of_articles=num_of_articles, pages=pages)
   articles += scrape_category(directory=directory, category='basket', num_of_articles=num_of_articles, pages=pages)
 
-  logger.info(f"Sport24 scrape complete.")
+  logger.info('Sport24 scrape complete.')
 
   return articles
 
