@@ -85,6 +85,8 @@ def db_convert(db_path, single_file_path):
   meta = pd.json_normalize(df.meta)
   dataframe["content"] = content.tolist()
   dataframe = dataframe.join(meta)
+  duplicate = dataframe[dataframe.content.duplicated()]
+  dataframe = dataframe.drop(duplicate.index)           # Fix bug some files were in the database twice
   dataframe.to_json(f'{single_file_path}/single_file_db.json')
 
 
@@ -110,25 +112,38 @@ def db_split(db_single_file, to_store):
   politiki_df = data[data.category == 'politiki']
 
   sport_train = sport_df.sample(frac=0.7,random_state=200)
-  sport_test = sport_df.drop(sport_train.index)
+  temp = sport_df.drop(sport_train.index)
+  sport_test = temp.sample(frac=0.4, random_state=200)
+  sport_val = temp.drop(sport_test.index)
 
   gaming_train =  gaming_df.sample(frac=0.7,random_state=200)
-  gaming_test = gaming_df.drop(gaming_train.index)
+  temp = gaming_df.drop(gaming_train.index)
+  gaming_test = temp.sample(frac=0.4, random_state=200)
+  gaming_val = temp.drop(gaming_test.index)
 
   tech_train = tech_df.sample(frac=0.7,random_state=200)
-  tech_test = tech_df.drop(tech_train.index)
+  temp = tech_df.drop(tech_train.index)
+  tech_test = temp.sample(frac=0.4, random_state=200)
+  tech_val = temp.drop(tech_test.index)
 
   movies_train = movies_df.sample(frac=0.7,random_state=200)
-  movies_test = movies_df.drop(movies_train.index)
+  temp = movies_df.drop(movies_train.index)
+  movies_test = temp.sample(frac=0.4, random_state=200)
+  movies_val = temp.drop(movies_test.index)
 
   politiki_train = politiki_df.sample(frac=0.7,random_state=200)
-  politiki_test = politiki_df.drop(politiki_train.index)
+  temp = politiki_df.drop(politiki_train.index)
+  politiki_test = temp.sample(frac=0.4, random_state=200)
+  politiki_val = temp.drop(politiki_test.index)
+
 
   train_df = pd.concat([sport_train, gaming_train, tech_train, movies_train, politiki_train], ignore_index=True)
   test_df = pd.concat([sport_test, gaming_test, tech_test, movies_test, politiki_test], ignore_index=True)
+  val_df = pd.concat([sport_val, gaming_val, tech_val, movies_val, politiki_val], ignore_index=True)
 
   train_df.to_json(f'{to_store}/train_dataset.json')
   test_df.to_json(f'{to_store}/test_dataset.json')
+  val_df.to_json(f'{to_store}/val_dataset.json')
 
 
 if __name__ == '__main__':

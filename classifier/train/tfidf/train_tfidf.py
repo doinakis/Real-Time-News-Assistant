@@ -20,6 +20,7 @@ from tensorflow.python.keras.layers import Dense, Dropout
 from tensorflow.python.keras.optimizer_v2.adam import Adam
 import pickle, argparse, logging, json, random
 import explore_data
+import pandas as pd
 import numpy as np
 
 # logging.basicConfig(format="%(asctime)s %(message)s", datefmt="%m/%d/%Y %I:%M:%S %p")
@@ -214,142 +215,59 @@ def model_evaluation(model, vec_sec_struct, test_data):
 
 
 def read_from_database(db_path):
-  docs_gaming = []
-  docs_movies = []
-  docs_tech = []
-  docs_basket = []
-  docs_football = []
-  docs_tennis = []
-  doc_count = []
-  count = 0
-  with os.scandir(f"{db_path}/uh/gaming") as it:
-    for entry in it:
-      if entry.name.endswith(".json") and entry.is_file() and entry.name != "scrapped_links.json":
-        data = json.load(open(entry.path))
-        docs_gaming.append(data)
-        count += 1
-  doc_count.append(count)
-  count = 0
-  with os.scandir(f"{db_path}/uh/movies") as it:
-    for entry in it:
-      if entry.name.endswith(".json") and entry.is_file() and entry.name != "scrapped_links.json":
-        data = json.load(open(entry.path))
-        docs_movies.append(data)
-        count += 1
-  doc_count.append(count)
-  count = 0
-  with os.scandir(f"{db_path}/uh/tech") as it:
-    for entry in it:
-      if entry.name.endswith(".json") and entry.is_file() and entry.name != "scrapped_links.json":
-        data = json.load(open(entry.path))
-        docs_tech.append(data)
-        count += 1
-  doc_count.append(count)
-  count = 0
-  with os.scandir(f"{db_path}/sport24/basket") as it:
-    for entry in it:
-      if entry.name.endswith(".json") and entry.is_file() and entry.name != "scrapped_links.json":
-        data = json.load(open(entry.path))
-        docs_basket.append(data)
-        count += 1
-  doc_count.append(count)
-  count = 0
-  with os.scandir(f"{db_path}/sport24/football") as it:
-    for entry in it:
-      if entry.name.endswith(".json") and entry.is_file() and entry.name != "scrapped_links.json":
-        data = json.load(open(entry.path))
-        docs_football.append(data)
-        count += 1
-  doc_count.append(count)
-  count = 0
-  with os.scandir(f"{db_path}/sport24/tennis") as it:
-    for entry in it:
-      if entry.name.endswith(".json") and entry.is_file() and entry.name != "scrapped_links.json":
-        data = json.load(open(entry.path))
-        docs_tennis.append(data)
-        count += 1
-  doc_count.append(count)
-  count = 0
-  with os.scandir(f"{db_path}/cnn/politiki") as it:
-    for entry in it:
-      if entry.name.endswith(".json") and entry.is_file() and entry.name != "scrapped_links.json":
-        data = json.load(open(entry.path))
-        docs_tennis.append(data)
-        count += 1
-  doc_count.append(count)
+  with open(f'{db_path}/train_dataset.json', 'r') as file:
+    data = pd.read_json(file)
 
-  docs = []
-  test_docs = []
+  with open(f'{db_path}/val_dataset.json', 'r') as file:
+    val_data = pd.read_json(file)
 
-  docs = docs + docs_basket[:int(min(doc_count)/3)]
-  docs = docs + docs_tennis[:int(min(doc_count)/3)]
-  docs = docs + docs_football[:int(min(doc_count)/3)]
-  docs = docs + docs_movies[:int(min(doc_count))]
-  docs = docs + docs_gaming[:int(min(doc_count))]
-  docs = docs + docs_tech[:int(min(doc_count))]
+  with open(f'{db_path}/test_dataset.json', 'r') as file:
+    test_data = pd.read_json(file)
 
-  test_docs = test_docs + docs_basket[int(min(doc_count)/3):]
-  test_docs = test_docs + docs_tennis[int(min(doc_count)/3):]
-  test_docs = test_docs + docs_football[int(min(doc_count)/3):]
-  test_docs = test_docs + docs_movies[int(min(doc_count)):]
-  test_docs = test_docs + docs_gaming[int(min(doc_count)):]
-  test_docs = test_docs + docs_tech[int(min(doc_count)):]
+  for index, entry in data.iterrows():
+    if entry.category == 'football' or entry.category == 'tennis' or entry.category == 'basket':
+      entry.category = 'sport'
+  for index, entry in val_data.iterrows():
+    if entry.category == 'football' or entry.category == 'tennis' or entry.category == 'basket':
+      entry.category = 'sport'
 
-  for doc in docs:
-    category = doc["meta"]["category"]
-    if category == "tennis" or category == "basket" or category == "football":
-      doc["meta"]["category"] = "sport"
-      doc["meta"]["name"] = doc["meta"]["url"].split("/")[-1]
+  for index, entry in test_data.iterrows():
+    if entry.category == 'football' or entry.category == 'tennis' or entry.category == 'basket':
+      entry.category = 'sport'
 
-  for doc in test_docs:
-    category = doc["meta"]["category"]
-    if category == "tennis" or category == "basket" or category == "football":
-      doc["meta"]["category"] = "sport"
-      doc["meta"]["name"] = doc["meta"]["url"].split("/")[-1]
+  data = data.sample(frac=0.5,random_state=200) # Due to hardware limitations
 
-  random.shuffle(docs)
-  random.shuffle(test_docs)
+  data = data.sample(frac=1).reset_index(drop=True)
+  val_data = val_data.sample(frac=1).reset_index(drop=True)
+  test_data = test_data.sample(frac=1).reset_index(drop=True)
 
-  texts = []
-  categories = []
-  for doc in docs:
-    texts.append(doc["content"])
-    if doc["meta"]["category"] == "sport":
-      categories.append(0)
-    elif doc["meta"]["category"] == "tech":
-      categories.append(1)
-    elif doc["meta"]["category"] == "gaming":
-      categories.append(2)
-    elif doc["meta"]["category"] == "movies":
-      categories.append(3)
-    elif doc["meta"]["category"] == "politiki":
-      categories.append(4)
-    else:
-      logger.info('Category ommited.')
+  train_texts = data.content.to_list()
+  val_texts = val_data.content.to_list()
+  test_texts = test_data.content.to_list()
 
-  test_texts = []
-  test_categories = []
-  for doc in test_docs:
-    test_texts.append(doc["content"])
-    if doc["meta"]["category"] == "sport":
-      test_categories.append(0)
-    elif doc["meta"]["category"] == "tech":
-      test_categories.append(1)
-    elif doc["meta"]["category"] == "gaming":
-      test_categories.append(2)
-    elif doc["meta"]["category"] == "movies":
-      test_categories.append(3)
-    elif doc["meta"]["category"] == "politiki":
-      test_categories.append(4)
-    else:
-      logger.info('Category ommited.')
+  conditions =      [data["category"]=="sport",  \
+                     data["category"]=="tech",   \
+                     data["category"]=="gaming", \
+                     data["category"]=="movies", \
+                     data["category"]=="politiki"]
+  val_conditions =  [val_data["category"]=="sport",  \
+                     val_data["category"]=="tech",   \
+                     val_data["category"]=="gaming", \
+                     val_data["category"]=="movies", \
+                     val_data["category"]=="politiki"]
+  test_conditions = [test_data["category"]=="sport",  \
+                     test_data["category"]=="tech",   \
+                     test_data["category"]=="gaming", \
+                     test_data["category"]=="movies", \
+                     test_data["category"]=="politiki"]
+  choices     = [0, 1, 2, 3, 4]
+  train_labels = np.select(conditions, choices, default=np.nan).astype(int)
+  val_labels = np.select(val_conditions, choices, default=np.nan).astype(int)
+  test_labels = np.select(test_conditions, choices, default=np.nan).astype(int)
 
-  train_texts, val_texts, train_categories, val_categories = train_test_split(texts, categories, test_size=0.2, shuffle=False)
-  train_labels = np.asarray(train_categories)
-  val_labels = np.asarray(val_categories)
-  test_labels = np.asarray(test_categories)
   data = ((train_texts,train_labels), (val_texts, val_labels))
   test_data = (test_texts, test_labels)
+
   return data, test_data
 
 
