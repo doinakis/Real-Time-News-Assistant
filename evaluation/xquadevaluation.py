@@ -5,7 +5,7 @@
 @Version :   0.0.1
 @Contact :   doinakis.michalis@gmail.com
 @License :   (C)Copyright 2022 Michalis Doinakis
-@Desc    :   None
+@Desc    :   Module that prepares xquad files for evaluation with the system.
 '''
 import os, json, string
 import pandas as pd

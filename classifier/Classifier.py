@@ -91,7 +91,7 @@ class Classifier():
   '''
   def classify(self, query):
     if self.classifier is None:
-      return None
+      return None, None
     else:
       prediction = self.classifier.classify(query)
       return prediction, self.to_label(prediction)

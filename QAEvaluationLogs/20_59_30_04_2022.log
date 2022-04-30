@@ -1,0 +1,22 @@
+INFO:haystack.modeling.utils:04/30/2022 08:59:19 PM Using devices: CUDA
+INFO:haystack.modeling.utils:04/30/2022 08:59:19 PM Number of GPUs: 1
+INFO:haystack.modeling.model.language_model:04/30/2022 08:59:19 PM LOADING MODEL
+INFO:haystack.modeling.model.language_model:04/30/2022 08:59:19 PM =============
+INFO:haystack.modeling.model.language_model:04/30/2022 08:59:19 PM Could not find deepset/xlm-roberta-large-squad2 locally.
+INFO:haystack.modeling.model.language_model:04/30/2022 08:59:19 PM Looking on Transformers Model Hub (in local cache and online)...
+INFO:haystack.modeling.model.language_model:04/30/2022 08:59:25 PM Loaded deepset/xlm-roberta-large-squad2
+INFO:haystack.modeling.logger:04/30/2022 08:59:38 PM ML Logging is turned off. No parameters, metrics or artifacts will be logged to MLFlow.
+INFO:haystack.modeling.utils:04/30/2022 08:59:38 PM Using devices: CUDA
+INFO:haystack.modeling.utils:04/30/2022 08:59:38 PM Number of GPUs: 1
+INFO:haystack.modeling.infer:04/30/2022 08:59:38 PM Got ya 5 parallel workers to do inference ...
+INFO:haystack.modeling.infer:04/30/2022 08:59:38 PM  0    0    0    0    0 
+INFO:haystack.modeling.infer:04/30/2022 08:59:38 PM /w\  /w\  /w\  /w\  /w\
+INFO:haystack.modeling.infer:04/30/2022 08:59:38 PM /'\  / \  /'\  /'\  / \
+INFO:__main__:04/30/2022 09:20:39 PM ------------------------------
+INFO:__main__:04/30/2022 09:20:39 PM Question Answering System info
+INFO:__main__:04/30/2022 09:20:39 PM Classifier: None
+INFO:__main__:04/30/2022 09:20:39 PM Reader: deepset/xlm-roberta-large-squad2 top_k: 1
+INFO:__main__:04/30/2022 09:20:39 PM Retriever: bm25 top_k: 3 Accuracy: 0.8974789915966387
+INFO:__main__:04/30/2022 09:20:39 PM Exact Match: 0.5226890756302521
+INFO:__main__:04/30/2022 09:20:39 PM F1-Score: 0.7112092425877001
+INFO:__main__:04/30/2022 09:20:39 PM ------------------------------

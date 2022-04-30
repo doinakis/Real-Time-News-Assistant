@@ -16,6 +16,7 @@ from haystack.nodes.preprocessor.preprocessor import PreProcessor
 from haystack.nodes import ElasticsearchRetriever, TfidfRetriever, FARMReader
 from haystack.document_stores import ElasticsearchDocumentStore
 import os, json
+from classifier.Classifier import Classifier
 from utils.utils import Singleton
 
 
@@ -172,7 +173,7 @@ class QASystem():
 
     self.reader = FARMReader(model_name_or_path=reader_model, max_seq_len=max_seq_len, doc_stride=doc_stride, use_gpu=use_gpu, progress_bar=False)
     self.pipe = Pipeline()
-    self.pipe.add_node(component=ClassificationNode(classifier), name="ClassificationNode", inputs=["Query"])
+    self.pipe.add_node(component=ClassificationNode(Classifier(classifier)), name="ClassificationNode", inputs=["Query"])
     self.pipe.add_node(component=self.retriever, name="ESRetriever", inputs=["ClassificationNode"])
     self.pipe.add_node(component=self.reader, name="Reader", inputs=["ESRetriever"])
 

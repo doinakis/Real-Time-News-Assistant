@@ -36,7 +36,6 @@ class ActionAnswerQuestion(Action):
   def __init__(self) -> None:
     logger.debug(f'Conneting to the database.')
     self.db = Database()
-    logger.info(self.db)
     self.db.connect()
     logger.debug(f'Initializting QASystem.')
     self.qa = QASystem(database=self.db)
@@ -51,8 +50,12 @@ class ActionAnswerQuestion(Action):
         query=f'{question}', params={"ESRetriever": {"top_k": 3}, "Reader": {"top_k": 1}}
       )
 
-    # TODO add support for no answer found. Optimize the probability threshold.
-    dispatcher.utter_message(text=answer['answers'][0].answer)
+    logger.info(answer)
+    if answer['answers']:
+      # TODO Optimize the probability threshold.
+      dispatcher.utter_message(text=answer['answers'][0].answer)
+    else:
+      dispatcher.utter_message(text='Λυπάμαι αλλά δεν βρέθηκε καμία απάντηση για τη συγκεκριμένη ερώτηση :(')
 
     return []
 
@@ -97,7 +100,6 @@ class ActionDatabaseUpdate(Action):
   def __init__(self) -> None:
     logger.info('Conneting to the database.')
     self.db = Database()
-    logger.info(self.db)
     self.db.connect()
     self.db_update_thread = Thread(target=db_update, args=(self.db,))
 

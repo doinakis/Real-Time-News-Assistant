@@ -5,7 +5,7 @@
 @Version :   0.0.1
 @Contact :   doinakis.michalis@gmail.com
 @License :   (C)Copyright 2022 Michalis Doinakis
-@Desc    :   None
+@Desc    :   Convert database to a single file and export train validation and test dataset.(70%, 20%, 10%)
 '''
 import os, json, argparse
 import pandas as pd
