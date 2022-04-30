@@ -4,7 +4,7 @@
 @Author  :   Michalis Doinakis
 @Version :   0.0.1
 @Contact :   doinakis.michalis@gmail.com
-@License :   (C)Copyright 2022 Michalis Doinakis
+@License :   https://github.com/andreasgoulas/greek-bert-distil
 @Desc    :   This file was obtained from https://github.com/andreasgoulas/greek-bert-distil
 '''
 from transformers import BertTokenizer, BertForSequenceClassification, AdamW
