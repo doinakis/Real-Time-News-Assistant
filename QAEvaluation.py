@@ -10,7 +10,6 @@
              and F1-Score for the QA Task. The readers Accuracy and F1-Score are
              affected and limited by the retrivers performance.
 '''
-from asyncio.log import logger
 import os
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'  # or any {'0', '1', '2'}
 from qasystem.QASystem import *
