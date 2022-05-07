@@ -69,14 +69,6 @@ nlu:
     - όχι πολυ καλά
     - απίστευτα στεναχωρημένος
 
-# - intent: bot_challenge
-#   examples: |
-#     - are you a bot?
-#     - are you a human?
-#     - am I talking to a bot?
-#     - am I talking to a human?
-
-
 - intent: answer_question
   examples: |
     - Πόσο ήρθε ο ΠΑΟΚ χθες?
