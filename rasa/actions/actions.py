@@ -9,10 +9,12 @@
 '''
 import os, sys
 import threading
+from datetime import datetime
 sys.path.append(os.path.realpath(os.path.join(os.path.dirname(__file__), '..', '..')))
 from typing import Any, Text, Dict, List
 from threading import Thread, Lock
 from rasa_sdk import Action, Tracker
+from rasa_sdk.forms import SlotSet
 from rasa_sdk.executor import CollectingDispatcher
 from qasystem.QASystem import *
 from scrape.UHScrape import scrape_uh
@@ -43,21 +45,31 @@ class ActionAnswerQuestion(Action):
   def run(self, dispatcher: CollectingDispatcher,
           tracker: Tracker,
           domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+    date = None
+    now = datetime.now()
+    if tracker.get_slot('time_slot') is not None and isinstance(tracker.get_slot('time_slot'), str):
+      date = tracker.get_slot('time_slot').split('T')[0] # Get only the date (%y%m%d)
 
     question = tracker.latest_message["text"]
-    with _dbLock:
-      answer = self.qa.pipe.run(
-        query=f'{question}', params={"ESRetriever": {"top_k": 3}, "Reader": {"top_k": 1}}
-      )
 
-    logger.info(answer)
+    if date is not None:
+      question = question.replace(date, "") # Remove the date provided by the User (Maybe bug check it out)
+
+    if (datetime.strptime(date, '%Y-%m-%d') > now):
+      date = None
+
+    print(question)
+
+    with _dbLock:
+      answer = self.qa.pipeline(query=f'{question}', date=date, top_retriever=3, top_reader=1)
+
     if answer['answers']:
       # TODO Optimize the probability threshold.
       dispatcher.utter_message(text=answer['answers'][0].answer)
     else:
       dispatcher.utter_message(text='Λυπάμαι αλλά δεν βρέθηκε καμία απάντηση για τη συγκεκριμένη ερώτηση :(')
 
-    return []
+    return [SlotSet("time_slot", None)]
 
 def db_update(db):
   '''

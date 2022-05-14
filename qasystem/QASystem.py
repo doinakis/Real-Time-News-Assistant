@@ -13,7 +13,7 @@ from haystack.pipelines import Pipeline
 from haystack.nodes.base import BaseComponent
 from haystack.nodes.connector import Crawler
 from haystack.nodes.preprocessor.preprocessor import PreProcessor
-from haystack.nodes import ElasticsearchRetriever, TfidfRetriever, FARMReader
+from haystack.nodes import BM25Retriever, TfidfRetriever, FARMReader
 from haystack.document_stores import ElasticsearchDocumentStore
 import os, json
 from classifier.Classifier import Classifier
@@ -167,28 +167,33 @@ class QASystem():
     self.db = database
 
     if retriever == "bm25":
-      self.retriever = ElasticsearchRetriever(document_store=self.db.document_store)
+      self.retriever = BM25Retriever(document_store=self.db.document_store)
     if retriever == "tfidf":
       self.retriever = TfidfRetriever(document_store=self.db.document_store)
 
     self.reader = FARMReader(model_name_or_path=reader_model, max_seq_len=max_seq_len, doc_stride=doc_stride, use_gpu=use_gpu, progress_bar=False)
     self.pipe = Pipeline()
     self.pipe.add_node(component=ClassificationNode(Classifier(classifier)), name="ClassificationNode", inputs=["Query"])
-    self.pipe.add_node(component=self.retriever, name="ESRetriever", inputs=["ClassificationNode"])
-    self.pipe.add_node(component=self.reader, name="Reader", inputs=["ESRetriever"])
+    self.pipe.add_node(component=self.retriever, name="Retriever", inputs=["ClassificationNode"])
+    self.pipe.add_node(component=self.reader, name="Reader", inputs=["Retriever"])
 
-  def pipeline(self, query, top_retriever=1, top_reader=1):
+  def pipeline(self, query, date, top_retriever=1, top_reader=1):
     '''
     Asks a question to the system
     :param query: The input question to the system
+    :param date: The date of the oldest document to search
     :param top_retriever: The number of documents that the retriever will pass to the reader
     :param top_reader: The number of candidate answers the reader found
 
     :returns:
         prediction: Pipelines prediction
     '''
+    filters = {}
+    if date is not None:
+      filters = {"date": {"$gte":date}}
+
     prediction = self.pipe.run(
-      query=f'{query}', params={"ESRetriever": {"top_k": top_retriever}, "Reader": {"top_k": top_reader}}
+      query=f'{query}', params={"Retriever": {"top_k": top_retriever, "filters": filters}, "Reader": {"top_k": top_reader}}
     )
 
     return prediction

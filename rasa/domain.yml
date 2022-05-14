@@ -41,6 +41,16 @@ actions:
   - bot_db_update
 
 # TODO add action to refresh the database
+entities:
+  - time
+
+slots:
+  time_slot:
+    type: text
+    initial_value: 0
+    mappings:
+    - type: from_entity
+      entity: time
 
 session_config:
   session_expiration_time: 60
