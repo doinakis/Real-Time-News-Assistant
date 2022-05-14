@@ -12,6 +12,7 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.feature_selection import SelectKBest
 from sklearn.feature_selection import f_classif
 from sklearn.model_selection import train_test_split
+from sklearn.metrics import f1_score, classification_report
 import os
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
 import tensorflow as tf
@@ -204,11 +205,13 @@ def train_ngram_model(model_name,
   return model, history['val_acc'][-1], history['val_loss'][-1]
 
 def model_evaluation(model, vec_sec_struct, test_data):
+  target_names = ['sport' , 'tech', 'gaming', 'movies', 'politiki', 'other']
   (test_texts, test_labels) = test_data
   vectorizer, selector = vec_sec_struct['vectorizer'], vec_sec_struct['selector']
   input_text = np.asarray(vectorizer.transform(test_texts).todense())
   input_vec = selector.transform(input_text).astype('float32')
   prediction = np.argmax(model.predict(input_vec), axis=-1)
+  print(classification_report(test_labels, prediction, digits=3, target_names=target_names))
   acc = np.equal(prediction, test_labels)
   acc = sum(acc) / len(acc)
   return acc
@@ -224,17 +227,6 @@ def read_from_database(db_path):
   with open(f'{db_path}/test_dataset.json', 'r') as file:
     test_data = pd.read_json(file)
 
-  for index, entry in data.iterrows():
-    if entry.category == 'football' or entry.category == 'tennis' or entry.category == 'basket':
-      entry.category = 'sport'
-  for index, entry in val_data.iterrows():
-    if entry.category == 'football' or entry.category == 'tennis' or entry.category == 'basket':
-      entry.category = 'sport'
-
-  for index, entry in test_data.iterrows():
-    if entry.category == 'football' or entry.category == 'tennis' or entry.category == 'basket':
-      entry.category = 'sport'
-
   data = data.sample(frac=0.5,random_state=200) # Due to hardware limitations
 
   data = data.sample(frac=1).reset_index(drop=True)
@@ -245,22 +237,25 @@ def read_from_database(db_path):
   val_texts = val_data.content.to_list()
   test_texts = test_data.content.to_list()
 
-  conditions =      [data["category"]=="sport",  \
-                     data["category"]=="tech",   \
-                     data["category"]=="gaming", \
-                     data["category"]=="movies", \
-                     data["category"]=="politiki"]
-  val_conditions =  [val_data["category"]=="sport",  \
-                     val_data["category"]=="tech",   \
-                     val_data["category"]=="gaming", \
-                     val_data["category"]=="movies", \
-                     val_data["category"]=="politiki"]
-  test_conditions = [test_data["category"]=="sport",  \
-                     test_data["category"]=="tech",   \
-                     test_data["category"]=="gaming", \
-                     test_data["category"]=="movies", \
-                     test_data["category"]=="politiki"]
-  choices     = [0, 1, 2, 3, 4]
+  conditions =      [data['category']=='sport',   \
+                     data['category']=='tech',    \
+                     data['category']=='gaming',  \
+                     data['category']=='movies',  \
+                     data['category']=='politiki',\
+                     data['category']=='other']
+  val_conditions =  [val_data['category']=='sport',   \
+                     val_data['category']=='tech',    \
+                     val_data['category']=='gaming',  \
+                     val_data['category']=='movies',  \
+                     val_data['category']=='politiki',\
+                     val_data['category']=='other']
+  test_conditions = [test_data['category']=='sport',  \
+                     test_data['category']=='tech',   \
+                     test_data['category']=='gaming', \
+                     test_data['category']=='movies', \
+                     test_data['category']=='politiki', \
+                     test_data['category']=='other']
+  choices     = [0, 1, 2, 3, 4, 5]
   train_labels = np.select(conditions, choices, default=np.nan).astype(int)
   val_labels = np.select(val_conditions, choices, default=np.nan).astype(int)
   test_labels = np.select(test_conditions, choices, default=np.nan).astype(int)

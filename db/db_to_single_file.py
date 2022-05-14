@@ -90,16 +90,20 @@ def db_convert(db_path, single_file_path):
   dataframe.to_json(f'{single_file_path}/single_file_db.json')
 
 
-def db_split(db_single_file, to_store):
+def db_split(db_single_file, other, to_store):
   '''
   Splits the single file db to training and test dataset
 
   :param db_single_file: Path to the single database file
+  :param other: Path to data that has no label
   :param to_store: Path to folder to store the training and validation dataset.
   '''
 
   with open(f'{db_single_file}', 'r') as file:
     data = pd.read_json(file)
+
+  with open(f'{other}', 'r') as file:
+    other_data = pd.read_json(file)
 
   for index, entry in data.iterrows():
     if entry.category == 'football' or entry.category == 'tennis' or entry.category == 'basket':
@@ -136,10 +140,14 @@ def db_split(db_single_file, to_store):
   politiki_test = temp.sample(frac=0.4, random_state=200)
   politiki_val = temp.drop(politiki_test.index)
 
+  other_train = other_data.sample(frac=0.7,random_state=200)
+  temp = other_data.drop(other_train.index)
+  other_test = temp.sample(frac=0.4, random_state=200)
+  other_val = temp.drop(other_test.index)
 
-  train_df = pd.concat([sport_train, gaming_train, tech_train, movies_train, politiki_train], ignore_index=True)
-  test_df = pd.concat([sport_test, gaming_test, tech_test, movies_test, politiki_test], ignore_index=True)
-  val_df = pd.concat([sport_val, gaming_val, tech_val, movies_val, politiki_val], ignore_index=True)
+  train_df = pd.concat([sport_train, gaming_train, tech_train, movies_train, politiki_train, other_train], ignore_index=True)
+  test_df = pd.concat([sport_test, gaming_test, tech_test, movies_test, politiki_test, other_test], ignore_index=True)
+  val_df = pd.concat([sport_val, gaming_val, tech_val, movies_val, politiki_val, other_val], ignore_index=True)
 
   train_df.to_json(f'{to_store}/train_dataset.json')
   test_df.to_json(f'{to_store}/test_dataset.json')
@@ -153,4 +161,6 @@ if __name__ == '__main__':
   args = parser.parse_args()
 
   db_convert(args.db_path, args.store_path)
-  db_split(f'{args.store_path}/single_file_db.json', args.store_path)
+  db_split(f'{args.store_path}/single_file_db.json',
+          f'{args.db_path}/other.json',
+          args.store_path)

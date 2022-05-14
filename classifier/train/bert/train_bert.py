@@ -13,6 +13,8 @@ from torch.utils.data import TensorDataset, DataLoader, RandomSampler, Sequentia
 import argparse, logging
 import pandas as pd
 from tqdm.auto import tqdm
+import numpy as np
+from sklearn.metrics import f1_score, classification_report
 
 logging.basicConfig(level='INFO')
 logger = logging.getLogger(__name__)
@@ -63,14 +65,14 @@ if __name__ == '__main__':
   learning_rate=5e-05
   device = torch.device('cpu')
 
-  labels = ['sport' , 'tech', 'gaming', 'movies', 'politiki']
+  labels = ['sport' , 'tech', 'gaming', 'movies', 'politiki', 'other']
   L2I = {label: i for i, label in enumerate(labels)}
 
   tokenizer = BertTokenizer.from_pretrained('nlpaueb/bert-base-greek-uncased-v1')
-  model = BertForSequenceClassification.from_pretrained('nlpaueb/bert-base-greek-uncased-v1', num_labels=5).to(device)
+  model = BertForSequenceClassification.from_pretrained('nlpaueb/bert-base-greek-uncased-v1', num_labels=6).to(device)
 
   features = []
-  for index, entry in tqdm(data.iterrows(), total=9006, desc='loading data'):
+  for index, entry in tqdm(data.iterrows(), total=data.shape[0], desc='loading data'):
     example = Example(entry['content'], None, L2I[entry['category']])
     features.append(convert_example(example, tokenizer, tokenizer_max_len))
 
@@ -100,3 +102,38 @@ if __name__ == '__main__':
     logger.info(f'[epoch {epoch + 1}] loss = {avg_loss}')
 
   model.save_pretrained(args.store_path)
+
+  with open(args.test_dataset, 'r') as file:
+    test_data = pd.read_json(file)
+
+  test_features = []
+
+  for index, entry in tqdm(test_data.iterrows(), total=test_data.shape[0], desc='loading data'):
+    example = Example(entry['content'], None, L2I[entry['category']])
+    test_features.append(convert_example(example, tokenizer, tokenizer_max_len))
+
+  test_dataset = get_tensor_dataset(test_features)
+  target_names = labels
+
+  test_loader = DataLoader(test_dataset, sampler=SequentialSampler(test_dataset),batch_size=batch_size)
+  y_true = None
+  y_pred = None
+
+  model.eval()
+  with torch.no_grad():
+    for batch in test_loader:
+      batch = tuple(x.to(device) for x in batch)
+      input_ids, input_masks, segment_ids, label_ids = batch
+      logits = model(input_ids, attention_mask=input_masks,
+                  token_type_ids=segment_ids)[0]
+      if y_true is None:
+        y_true = label_ids.detach().cpu().numpy()
+        y_pred = logits.detach().cpu().numpy()
+      else:
+        y_true = np.append(y_true, label_ids.detach().cpu().numpy(), axis=0)
+        y_pred = np.append(y_pred, logits.detach().cpu().numpy(), axis=0)
+  y_pred = y_pred.argmax(axis=-1)
+  if target_names is not None:
+    print(classification_report(y_true, y_pred, digits=3, target_names=target_names))
+  f1 = f1_score(y_true, y_pred, average='macro')
+  logger.info(f1)
