@@ -11,20 +11,21 @@
              affected and limited by the retrivers performance.
 '''
 import os
-os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'  # or any {'0', '1', '2'}
-from qasystem.QASystem import *
-from evaluation.xquadevaluation import *
-from classifier.Classifier import *
 import argparse, logging
 from datetime import datetime
-from tqdm.contrib import tzip
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'  # or any {'0', '1', '2'}
 
-TIME = datetime.now().strftime('%H_%M_%d_%m_%Y.log')
-logging.basicConfig(filename=f'./QAEvaluationLogs/{TIME}',format="%(levelname)s:%(name)s:%(asctime)s %(message)s", datefmt="%m/%d/%Y %I:%M:%S %p", level='INFO')
+TIME = datetime.now().strftime('%H_%M_%S_%d_%m_%Y.log')
+logging.basicConfig(filename=f'./Logs/QAEvaluationLogs/{TIME}',format="%(levelname)s:%(name)s:%(asctime)s %(message)s", datefmt="%m/%d/%Y %I:%M:%S %p", level='INFO')
 logging.getLogger('WDM').disabled = True
 logging.getLogger('haystack.nodes.connector.crawler').disabled = True
 logging.getLogger('elasticsearch').setLevel(logging.WARNING)
 logger = logging.getLogger(__name__)
+
+from qasystem.QASystem import *
+from evaluation.xquadevaluation import *
+from classifier.Classifier import *
+from tqdm.contrib import tzip
 
 
 if __name__ == '__main__':
