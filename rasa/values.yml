@@ -1,4 +1,6 @@
-# Default RASA X values file needs to be changed.
+app:
+  install: false
+  existingUrl: <IP of rasa action server>
 rasax:
   tag: "1.1.0"
 eventService:
@@ -6,5 +8,9 @@ eventService:
 dbMigrationService:
   tag: "1.1.0"
 rasa:
-   # ...
-   tag: "<Rasa OS version>-full"
+  version: "3.1.0"
+  versions:
+    rasaProduction:
+      enabled: true
+    rasaWorker:
+      enabled: true

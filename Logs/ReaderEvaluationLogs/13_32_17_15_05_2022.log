@@ -1,0 +1,20 @@
+INFO:haystack.modeling.model.optimization:05/15/2022 01:32:21 PM apex not found, won't use it. See https://nvidia.github.io/apex/
+INFO:haystack.modeling.utils:05/15/2022 01:32:21 PM Using devices: CUDA:0
+INFO:haystack.modeling.utils:05/15/2022 01:32:21 PM Number of GPUs: 1
+INFO:haystack.modeling.model.language_model:05/15/2022 01:32:21 PM LOADING MODEL
+INFO:haystack.modeling.model.language_model:05/15/2022 01:32:21 PM =============
+INFO:haystack.modeling.model.language_model:05/15/2022 01:32:21 PM Could not find Danastos/qacombination_bert_el locally.
+INFO:haystack.modeling.model.language_model:05/15/2022 01:32:21 PM Looking on Transformers Model Hub (in local cache and online)...
+INFO:haystack.modeling.model.language_model:05/15/2022 01:32:26 PM Loaded Danastos/qacombination_bert_el
+INFO:haystack.modeling.utils:05/15/2022 01:32:35 PM Using devices: CUDA
+INFO:haystack.modeling.utils:05/15/2022 01:32:35 PM Number of GPUs: 1
+INFO:haystack.modeling.infer:05/15/2022 01:32:35 PM Got ya 5 parallel workers to do inference ...
+INFO:haystack.modeling.infer:05/15/2022 01:32:35 PM  0     0     0     0     0  
+INFO:haystack.modeling.infer:05/15/2022 01:32:35 PM /w\   /w\   /w\   /w\   /w\ 
+INFO:haystack.modeling.infer:05/15/2022 01:32:35 PM /'\   / \   /'\   /'\   / \ 
+INFO:__main__:05/15/2022 01:33:58 PM ------------------------------
+INFO:__main__:05/15/2022 01:33:58 PM Question Answering System info
+INFO:__main__:05/15/2022 01:33:58 PM Reader: Danastos/qacombination_bert_el
+INFO:__main__:05/15/2022 01:33:58 PM Exact Match: 0.5563025210084034
+INFO:__main__:05/15/2022 01:33:58 PM F1-Score: 0.7425348937014348
+INFO:__main__:05/15/2022 01:33:58 PM ------------------------------

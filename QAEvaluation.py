@@ -16,7 +16,7 @@ from datetime import datetime
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'  # or any {'0', '1', '2'}
 
 TIME = datetime.now().strftime('%H_%M_%S_%d_%m_%Y.log')
-logging.basicConfig(filename=f'./Logs/QAEvaluationLogs/{TIME}',format="%(levelname)s:%(name)s:%(asctime)s %(message)s", datefmt="%m/%d/%Y %I:%M:%S %p", level='INFO')
+logging.basicConfig(filename=f'../Logs/QAEvaluationLogs/{TIME}',format="%(levelname)s:%(name)s:%(asctime)s %(message)s", datefmt="%m/%d/%Y %I:%M:%S %p", level='INFO')
 logging.getLogger('WDM').disabled = True
 logging.getLogger('haystack.nodes.connector.crawler').disabled = True
 logging.getLogger('elasticsearch').setLevel(logging.WARNING)
@@ -53,9 +53,7 @@ if __name__ == '__main__':
   retriever_em = []
 
   for question, answer, doc_id in tzip(df.question, df.answer, df.doc_id):
-    prediction = qa.pipe.run(
-      query=f'{question}', params={"ESRetriever": {"top_k": args.top_k_retriever}, "Reader": {"top_k": args.top_k_reader}}
-    )
+    prediction = qa.pipeline(query=f'{question}', date=None, top_retriever=args.top_k_retriever, top_reader=args.top_k_reader)
 
     retriever_em.append(int(prediction['documents'][0].meta['name'] == doc_id))
     em_scores.append(compute_em(prediction['answers'][0].answer, answer['text']))
