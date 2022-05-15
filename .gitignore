@@ -22,7 +22,7 @@ __pycache__
 !classifier
 !db
 !evaluation
-!Logs
+!logs
 !qasystem
 !rasa
 !scrapping
