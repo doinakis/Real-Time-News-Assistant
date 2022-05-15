@@ -55,9 +55,8 @@ class ActionAnswerQuestion(Action):
 
     if date is not None:
       question = question.replace(date, "") # Remove the date provided by the User (Maybe bug check it out)
-
-    if (datetime.strptime(date, '%Y-%m-%d') > now):
-      date = None
+      if (datetime.strptime(date, '%Y-%m-%d') > now):
+        date = None
 
     print(question)
 
@@ -66,7 +65,10 @@ class ActionAnswerQuestion(Action):
 
     if answer['answers']:
       # TODO Optimize the probability threshold.
-      dispatcher.utter_message(text=answer['answers'][0].answer)
+      link = answer['answers'][0].meta['url']
+      ans = answer['answers'][0].answer
+      text=f'Η απάντηση στην ερώτηση σου είναι: {ans}, σύμφωνα με [αυτό]({link}) το άρθρο.'
+      dispatcher.utter_message(text=text)
     else:
       dispatcher.utter_message(text='Λυπάμαι αλλά δεν βρέθηκε καμία απάντηση για τη συγκεκριμένη ερώτηση :(')
 

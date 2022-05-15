@@ -1,0 +1,22 @@
+INFO:haystack.modeling.model.optimization:05/15/2022 08:28:01 PM apex not found, won't use it. See https://nvidia.github.io/apex/
+INFO:haystack.modeling.utils:05/15/2022 08:28:01 PM Using devices: CUDA:0
+INFO:haystack.modeling.utils:05/15/2022 08:28:01 PM Number of GPUs: 1
+INFO:haystack.modeling.model.language_model:05/15/2022 08:28:01 PM LOADING MODEL
+INFO:haystack.modeling.model.language_model:05/15/2022 08:28:01 PM =============
+INFO:haystack.modeling.model.language_model:05/15/2022 08:28:01 PM Could not find deepset/xlm-roberta-large-squad2 locally.
+INFO:haystack.modeling.model.language_model:05/15/2022 08:28:01 PM Looking on Transformers Model Hub (in local cache and online)...
+INFO:haystack.modeling.model.language_model:05/15/2022 08:28:08 PM Loaded deepset/xlm-roberta-large-squad2
+INFO:haystack.modeling.utils:05/15/2022 08:28:25 PM Using devices: CUDA
+INFO:haystack.modeling.utils:05/15/2022 08:28:25 PM Number of GPUs: 1
+INFO:haystack.modeling.infer:05/15/2022 08:28:25 PM Got ya 5 parallel workers to do inference ...
+INFO:haystack.modeling.infer:05/15/2022 08:28:25 PM  0     0     0     0     0  
+INFO:haystack.modeling.infer:05/15/2022 08:28:25 PM /w\   /w\   /w\   /w\   /w\ 
+INFO:haystack.modeling.infer:05/15/2022 08:28:25 PM /'\   / \   /'\   /'\   / \ 
+INFO:__main__:05/15/2022 08:42:18 PM ------------------------------
+INFO:__main__:05/15/2022 08:42:18 PM Question Answering System info
+INFO:__main__:05/15/2022 08:42:18 PM Reader: deepset/xlm-roberta-large-squad2
+INFO:__main__:05/15/2022 08:42:18 PM Exact Match: 0.5571428571428572
+INFO:__main__:05/15/2022 08:42:18 PM F1-Score: 0.7576235228024292
+INFO:__main__:05/15/2022 08:42:18 PM f1 lowest score mean: 0.7940362841284727
+INFO:__main__:05/15/2022 08:42:18 PM em lowest score mean: 0.8188175412371114
+INFO:__main__:05/15/2022 08:42:18 PM ------------------------------

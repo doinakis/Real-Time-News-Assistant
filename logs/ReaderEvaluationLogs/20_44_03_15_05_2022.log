@@ -1,0 +1,22 @@
+INFO:haystack.modeling.model.optimization:05/15/2022 08:44:06 PM apex not found, won't use it. See https://nvidia.github.io/apex/
+INFO:haystack.modeling.utils:05/15/2022 08:44:06 PM Using devices: CUDA:0
+INFO:haystack.modeling.utils:05/15/2022 08:44:06 PM Number of GPUs: 1
+INFO:haystack.modeling.model.language_model:05/15/2022 08:44:06 PM LOADING MODEL
+INFO:haystack.modeling.model.language_model:05/15/2022 08:44:06 PM =============
+INFO:haystack.modeling.model.language_model:05/15/2022 08:44:06 PM Could not find Danastos/squad_bert_el locally.
+INFO:haystack.modeling.model.language_model:05/15/2022 08:44:06 PM Looking on Transformers Model Hub (in local cache and online)...
+INFO:haystack.modeling.model.language_model:05/15/2022 08:44:10 PM Loaded Danastos/squad_bert_el
+INFO:haystack.modeling.utils:05/15/2022 08:44:19 PM Using devices: CUDA
+INFO:haystack.modeling.utils:05/15/2022 08:44:19 PM Number of GPUs: 1
+INFO:haystack.modeling.infer:05/15/2022 08:44:19 PM Got ya 5 parallel workers to do inference ...
+INFO:haystack.modeling.infer:05/15/2022 08:44:19 PM  0     0     0     0     0  
+INFO:haystack.modeling.infer:05/15/2022 08:44:19 PM /w\   /w\   /w\   /w\   /w\ 
+INFO:haystack.modeling.infer:05/15/2022 08:44:19 PM /'\   / \   /'\   /'\   / \ 
+INFO:__main__:05/15/2022 08:45:44 PM ------------------------------
+INFO:__main__:05/15/2022 08:45:44 PM Question Answering System info
+INFO:__main__:05/15/2022 08:45:44 PM Reader: Danastos/squad_bert_el
+INFO:__main__:05/15/2022 08:45:44 PM Exact Match: 0.5714285714285714
+INFO:__main__:05/15/2022 08:45:44 PM F1-Score: 0.7488355404570559
+INFO:__main__:05/15/2022 08:45:44 PM f1 lowest score mean: 0.7726026867194014
+INFO:__main__:05/15/2022 08:45:44 PM em lowest score mean: 0.7955945488245133
+INFO:__main__:05/15/2022 08:45:44 PM ------------------------------
