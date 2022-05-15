@@ -44,12 +44,24 @@ if __name__ == '__main__':
   f1_scores = []
   em_scores = []
 
+  f1_lowest_score = []
+  em_lowest_score = []
+
   for index, document in tqdm(df.iterrows(), total=df.shape[0], desc='Predicting'):
     tmp_doc = Document(content=document.content, id=document.doc_id)
     prediction = reader.predict(query=document.question, documents=[tmp_doc], top_k=1)
 
-    em_scores.append(compute_em(prediction['answers'][0].answer, document.answer['text']))
-    f1_scores.append(compute_f1(prediction['answers'][0].answer, document.answer['text']))
+    em = compute_em(prediction['answers'][0].answer, document.answer['text'])
+    f1 = compute_f1(prediction['answers'][0].answer, document.answer['text'])
+
+    if em == 1:
+      em_lowest_score.append(prediction['answers'][0].score)
+
+    if f1 >= 0.7:
+      f1_lowest_score.append(prediction['answers'][0].score)
+
+    em_scores.append(em)
+    f1_scores.append(f1)
 
   scores = pd.DataFrame()
   scores['em'] = em_scores
@@ -61,4 +73,6 @@ if __name__ == '__main__':
   logger.info(f'Reader: {args.model}')
   logger.info(f'Exact Match: {scores.em.mean()}')
   logger.info(f'F1-Score: {scores.f1.mean()}')
+  logger.info(f'f1 lowest score mean: {sum(f1_lowest_score)/len(f1_lowest_score)}')
+  logger.info(f'em lowest score mean: {sum(em_lowest_score)/len(em_lowest_score)}')
   logger.info('------------------------------')
