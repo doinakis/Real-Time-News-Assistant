@@ -1,7 +1,7 @@
 # !/bin/bash
 vevn_path='/home/doinakis/venv/Real-Time-News-Assistant/bin/python3'
 xquad_file='/home/doinakis/github/haystack/xquad-dataset/xquad.el.json'
-eval_script='../ReaderEvaluation.py'
+eval_script='ReaderEvaluation.py'
 
 declare -a models=("deepset/xlm-roberta-large-squad2"
                   "Danastos/triviaqa_bert_el"

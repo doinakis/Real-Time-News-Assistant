@@ -7,7 +7,8 @@
 @License :   (C)Copyright 2022 Michalis Doinakis
 @Desc    :   Script to finetune Readers hyperparameters.
 '''
-import os
+import os, sys
+sys.path.append(os.path.realpath(os.path.join(os.path.dirname(__file__), '..')))
 import argparse, logging
 from datetime import datetime
 
@@ -16,7 +17,7 @@ from tqdm import tqdm
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'  # or any {'0', '1', '2'}
 
 TIME = datetime.now().strftime('%H_%M_%S_%d_%m_%Y.log')
-logging.basicConfig(filename=f'../Logs/ReaderEvaluationLogs/{TIME}', filemode='w', format="%(levelname)s:%(name)s:%(asctime)s %(message)s", datefmt="%m/%d/%Y %I:%M:%S %p", level='INFO')
+logging.basicConfig(filename=f'../logs/ReaderEvaluationLogs/{TIME}', filemode='w', format="%(levelname)s:%(name)s:%(asctime)s %(message)s", datefmt="%m/%d/%Y %I:%M:%S %p", level='INFO')
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
 

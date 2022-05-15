@@ -82,7 +82,7 @@ class Classifier():
     elif prediction == 4:
       return 'politiki'
     else:
-      return 'None'
+      return 'other'
 
   '''
   Function that predicts the class of the query

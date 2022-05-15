@@ -11,9 +11,7 @@ __pycache__
 # Accept Files
 !.gitignore
 !QAEvaluation.py
-!ReaderEvaluation.py
 !README.md
-!RetrieverEvaluation.py
 !requirements.txt
 !test.ipynb
 
