@@ -1,0 +1,7 @@
+INFO:haystack.modeling.model.optimization:05/15/2022 09:43:03 PM apex not found, won't use it. See https://nvidia.github.io/apex/
+INFO:haystack.nodes.retriever.sparse:05/15/2022 09:43:07 PM Found 266 candidate paragraphs from 266 docs in DB
+INFO:__main__:05/15/2022 09:43:16 PM ------------------------------
+INFO:__main__:05/15/2022 09:43:16 PM Retriver Evaluation info top_k:10
+INFO:__main__:05/15/2022 09:43:16 PM BM25: 0.984873949579832
+INFO:__main__:05/15/2022 09:43:16 PM TFIDF: 0.9588235294117647
+INFO:__main__:05/15/2022 09:43:16 PM ------------------------------
