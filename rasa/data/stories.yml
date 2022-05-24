@@ -41,3 +41,10 @@ stories:
   - action: utter_greet
   - intent: db_update
   - action: bot_db_update
+
+- story: bot challenge
+  steps:
+  - user: |
+      είσαι μποτάκι?
+    intent: bot_challenge
+  - action: utter_iamabot

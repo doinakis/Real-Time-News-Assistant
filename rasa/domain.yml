@@ -7,6 +7,7 @@ intents:
   - deny
   - mood_great
   - mood_unhappy
+  - bot_challenge
   - answer_question
   - db_update
 
@@ -28,19 +29,18 @@ responses:
   - text: "Αντίο"
 
   utter_answer_question:
-  - text: "Πόσους πόντους παρέδωσε η άμυνα των Πάνθερς;"
+  - text: "Χμμ δώσε μου λίγο χρόνο..."
 
   utter_db_update:
   - text: "Λήψη νέων άρθων"
 
-  # utter_iamabot:
-  # - text: "I am a bot, powered by Rasa."
+  utter_iamabot:
+  - text: "Είμαι ένας ψηφιακός βοηθός που παρέχει πληροφορίες ειδήσεων :)"
 
 actions:
   - bot_answer_question
   - bot_db_update
 
-# TODO add action to refresh the database
 entities:
   - time
 
