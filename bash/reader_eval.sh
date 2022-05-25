@@ -13,6 +13,13 @@ declare -a models=("deepset/xlm-roberta-large-squad2"
 for model in "${models[@]}"
 do
   echo "Evaluation of $model"
-  $vevn_path $eval_script --xquad_file $xquad_file --model $model
+  $vevn_path $eval_script --xquad_file $xquad_file --model $model --max_seq_len 256 --doc_stride 128
+  echo "Done!"
+done
+
+for model in "${models[@]}"
+do
+  echo "Evaluation of $model"
+  $vevn_path $eval_script --xquad_file $xquad_file --model $model --max_seq_len 512 --doc_stride 256
   echo "Done!"
 done

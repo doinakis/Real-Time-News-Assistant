@@ -36,9 +36,12 @@ if __name__ == '__main__':
   parser = argparse.ArgumentParser(description='QASystem Evaluation script.')
   parser.add_argument('--xquad_file', required=True, help='path to the dataset')
   parser.add_argument('--model', required=True, help='Reader model to evalutate')
+  parser.add_argument('--max_seq_len', required=True, type=int, help='Reader max input sequence length')
+  parser.add_argument('--doc_stride', required=True, type=int, help='Reader max input sequence length')
   args = parser.parse_args()
 
-  reader = FARMReader(model_name_or_path=args.model, max_seq_len=256, doc_stride=128, use_gpu=True, progress_bar=False)
+  # max_seq_len=256, doc_stride=128
+  reader = FARMReader(model_name_or_path=args.model, max_seq_len=args.max_seq_len, doc_stride=args.doc_stride, use_gpu=True, progress_bar=False)
   df, _ = xquad_data_prepare(args.xquad_file)
 
   f1_scores = []
@@ -71,6 +74,7 @@ if __name__ == '__main__':
   logger.info('------------------------------')
   logger.info('Question Answering System info')
   logger.info(f'Reader: {args.model}')
+  logger.info(f'max_seq_len: {args.max_seq_len} doc_stride: {args.doc_stride}')
   logger.info(f'Exact Match: {scores.em.mean()}')
   logger.info(f'F1-Score: {scores.f1.mean()}')
   logger.info(f'f1 lowest score mean: {sum(f1_lowest_score)/len(f1_lowest_score)}')
