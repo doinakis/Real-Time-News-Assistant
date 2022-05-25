@@ -7,6 +7,7 @@ models
 on-demand-db
 __pycache__
 .rasa
+*.html
 
 # Accept Files
 !.gitignore
