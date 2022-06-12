@@ -49,6 +49,7 @@ rasactl start rasa-x --values-file values.yml
 Also make sure you have set up the existingUrl in the values.yml file to the endpoint of the action server. You will need to port forward the IP of the action server in order for the RASA-X to be able to access the action server we set up earlier.
 
 The assistant can be trained and activated using RASA-X.
+
 ## Reference
 
 ```
