@@ -78,7 +78,7 @@ class Classifier():
     elif prediction == 2:
       return 'gaming'
     elif prediction == 3:
-      return 'movie'
+      return 'movies'
     elif prediction == 4:
       return 'politiki'
     else:

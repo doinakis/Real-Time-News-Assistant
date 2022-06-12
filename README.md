@@ -2,7 +2,53 @@
 
 Real Time News Assistant for greek news.
 
+## How to run the project
+First of all it is advised to use a python virtual environment to run this project. The version of python used was 3.8.10
 
+### Create Virtual Environment
+```
+python3 -m venv /path/to/new/virtual/environment
+```
+Make sure the virtual environment is enabled and then run:
+```
+pip3 install -r requirements.txt
+```
+This will install all the required python modules.
+
+### Set up the database
+In order to set up the elasticsearch database you can use haystacks abstraction that creates and runs a docker container with the default configuration. In a python script just run:
+```
+from haystack.utils import launch_es
+launch_es()
+```
+This will create a docker container with an elasticsearch database running at http://localhost:9200
+
+You can then add documents using the API provided in the QASystem as follows:
+```
+db = Database()
+db.connect()
+db.add_documents(docs)
+```
+Where docs is a list of dictionaries where its dictionary is a document. To connect with custom creadentials or to a different port check the API. After the initialization of the database we can run the action server.
+
+For more customization of the database you will need to set up the container as described [here](https://www.elastic.co/guide/en/elasticsearch/reference/current/docker.html)
+### Run the Action server
+In order to run the action server open a terminal in the rasa folder with the venv activated and run:
+```
+rasa run actions
+```
+Make sure the actions endpoint is uncommented in the endpoint.yml file
+
+### Set up RASA-X
+In order to set up RASA-X the RASA Ephemeral Installer was used. More details are provided [here](https://github.com/RasaHQ/REI).
+Run:
+```
+bash rei.sh -y
+rasactl start rasa-x --values-file values.yml
+```
+Also make sure you have set up the existingUrl in the values.yml file to the endpoint of the action server. You will need to port forward the IP of the action server in order for the RASA-X to be able to access the action server we set up earlier.
+
+The assistant can be trained and activated using RASA-X.
 ## Reference
 
 ```

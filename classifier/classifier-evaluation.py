@@ -25,12 +25,24 @@ if __name__ == '__main__':
   accuracy = 0
   queries = 0
 
+  y_true = None
+  y_pred = None
+  target_names = ['sport' , 'tech', 'gaming', 'movies', 'politiki', 'other']
+  L2I = {label: i for i, label in enumerate(target_names)}
+
   for category in df.columns:
     queries += len(df[category].dropna())
     for query in df[category].dropna():
-      _, label = classifier.classify(query=query)
-      if label == category:
-        accuracy += 1
+      logits, label = classifier.classify(query=query)
+
+      if y_true is None:
+        y_true = L2I[label].detach().cpu().numpy()
+        y_pred = logits.detach().cpu().numpy()
+      else:
+        y_true = np.append(y_true, L2I[label].detach().cpu().numpy(), axis=0)
+        y_pred = np.append(y_pred, logits.detach().cpu().numpy(), axis=0)
+
+    y_pred = y_pred.argmax(axis=-1)
 
   accuracy = accuracy / queries
 

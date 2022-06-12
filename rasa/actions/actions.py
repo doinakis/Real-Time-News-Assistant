@@ -65,8 +65,9 @@ class ActionAnswerQuestion(Action):
 
     if answer['answers']:
       # TODO Optimize the probability threshold.
-      link = answer['answers'][0].meta['url']
       ans = answer['answers'][0].answer
+      url_spaced_ans = ans.replace(' ', '%20')
+      link = answer['answers'][0].meta['url'] + f'#:~:text={url_spaced_ans}'
       text=f'Η απάντηση στην ερώτηση σου είναι: {ans}, σύμφωνα με [αυτό]({link}) το άρθρο.'
       dispatcher.utter_message(text=text)
     else:
