@@ -29,7 +29,7 @@ db = Database()
 db.connect()
 db.add_documents(docs)
 ```
-Where docs is a list of dictionaries where its dictionary is a document. To connect with custom creadentials or to a different port check the API. After the initialization of the database we can run the action server.
+Where docs is a list of dictionaries where each dictionary is a document. To connect with custom creadentials or to a different port check the API. After the initialization of the database we can run the action server.
 
 For more customization of the database you will need to set up the container as described [here](https://www.elastic.co/guide/en/elasticsearch/reference/current/docker.html)
 ### Run the Action server

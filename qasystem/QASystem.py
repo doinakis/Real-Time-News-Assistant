@@ -160,7 +160,7 @@ class QASystem():
   :param doc_stride: The doc stride used for searching
   :param use_gpu: Whether to use GPU for acceleration or not
   '''
-  def __init__(self, database, classifier=None, reader_model="deepset/xlm-roberta-large-squad2", max_seq_len=256, doc_stride=128, use_gpu=True,retriever="bm25"):
+  def __init__(self, database, classifier=None, reader_model="deepset/xlm-roberta-large-squad2", max_seq_len=256, doc_stride=128, use_gpu=True, retriever="bm25"):
     if not database:
       raise Exception("Database Object needed")
 
