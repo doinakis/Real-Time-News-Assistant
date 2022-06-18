@@ -1,6 +1,7 @@
 version: "3.1"
 
 rules:
+
 - rule: Say goodbye anytime the user says goodbye
   steps:
   - intent: goodbye
@@ -10,3 +11,9 @@ rules:
   steps:
   - intent: bot_challenge
   - action: utter_iamabot
+
+rules:
+- rule: Ask the user to rephrase whenever they send a message with low NLU confidence
+  steps:
+  - intent: nlu_fallback
+  - action: utter_fallback

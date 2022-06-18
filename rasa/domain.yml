@@ -13,20 +13,20 @@ intents:
 
 responses:
   utter_greet:
-  - text: "Γεια σου! Πώς μπορώ να σε βοηθήσω?"
+  - text: "Γεια σου! Πώς μπορώ να σε βοηθήσω;"
 
   utter_cheer_up:
   - text: "Να κάτι για να σε κάνει να νιώσεις καλύτερα:"
     image: "https://i.imgur.com/nGF1K8f.jpg"
 
   utter_did_that_help:
-  - text: "Σε βοήθησε αυτό?"
+  - text: "Σε βοήθησε αυτό;"
 
   utter_happy:
-  - text: "Τέλεια, καλή συνέχεια!"
+  - text: "Τέλεια, είμαι στη διάθεσή σου για οποιαδήποτε άλλη ερώτηση!"
 
   utter_goodbye:
-  - text: "Αντίο"
+  - text: "Αντίο. Θα χαρώ να τα ξαναπούμε!"
 
   utter_answer_question:
   - text: "Χμμ δώσε μου λίγο χρόνο..."
@@ -37,6 +37,11 @@ responses:
   utter_iamabot:
   - text: "Είμαι ένας ψηφιακός βοηθός που παρέχει πληροφορίες ειδήσεων :)"
 
+  utter_rephrase:
+  - text: "Χμμ συγγνώμη που δεν βρήκα κάτι σχετικό. Δοκίμασε να αναδιατυπώσεις ή κάνε μία νέα ερώτηση :D"
+
+  utter_fallback:
+  - text: "Δεν είμαι σίγουρος ότι κατάλαβα καλά. Δοκίμασε να αναδιατυπώσεις το μήνυμα σου."
 actions:
   - bot_answer_question
   - bot_db_update
@@ -51,10 +56,6 @@ slots:
     mappings:
     - type: from_entity
       entity: time
-
-templates:
-  utter_link:
-  - text: Σύμφωνα με [αυτό]{link} το άρθρο.
 
 session_config:
   session_expiration_time: 60
