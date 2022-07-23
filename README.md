@@ -1,6 +1,6 @@
 # Real Time News Assistant
 
-Real Time News Assistant for greek news.
+Real Time News Assistant for greek news. (Aristotle University of Thessaloniki [Diploma Thesis](https://ikee.lib.auth.gr/record/340592/?ln=el))
 
 ## How to run the project
 First of all it is advised to use a python virtual environment to run this project. The version of python used was 3.8.10
