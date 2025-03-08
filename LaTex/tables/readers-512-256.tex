@@ -1,0 +1,19 @@
+\begin{table}[H]
+    \captionsetup{justification=centering}
+    \begin{center}
+        \caption{\emph{Accuracy} και \emph{$F_1$ Score} των μοντέλων \emph{Reader} με \emph{max\_input\_length}=$512$ και \emph{doc\_stride=$256$}}
+        \begin{tabular}{ | c | c | c | }
+            \hline
+            \rowcolor{Gray}
+            Μοντέλο & \textbf{\emph{$EM$}} & \textbf{\emph{$F_1 Score$}}\\
+            xlm-roberta-large-squad2 & $56.4$ & $76.8$\\
+            squad\_bert\_el & $57.1$ & $74.8$\\
+            qacombination\_bert\_el & $55.6$ & $74.1$\\
+            newsqa\_bert\_el & $39.2$ & $58.6$\\
+            nq\_bert\_el & $38.5$ & $57.7$\\
+            triviaqa\_bert\_el & $27.5$ & $40.7$\\
+            \hline
+        \end{tabular}
+        \label{tab:reader_scores2}
+    \end{center}
+\end{table}

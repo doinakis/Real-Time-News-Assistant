@@ -1,0 +1,33 @@
+\documentclass[a4paper,12 pt,twoside]{report}
+\usepackage{fullpage}
+
+\usepackage{mystyle}
+
+\begin{document}
+
+\input{chapters/chapter0}
+\newevenside
+
+% Change page numbering
+\pagenumbering{arabic}
+
+\input{chapters/chapter1}
+
+\input{chapters/chapter2}
+
+\input{chapters/chapter3}
+
+\input{chapters/chapter4} 
+
+\input{chapters/chapter5}
+
+\input{chapters/chapter6}
+
+\input{chapters/chapter7}
+
+\input{chapters/appendix}
+
+\renewcommand{\bibname}{Βιβλιογραφία}
+\bibliography{bibliography/bibliography.bib}
+
+\end{document}

@@ -1,0 +1,27 @@
+\begin{table}[!htb]
+    \captionsetup{justification=centering}
+    \begin{center}
+        \caption{Αποτελέσματα ταξινόμησης ερωτήσεων με το μοντέλο \emph{Greek Bert}}
+        \begin{tabular}{ | c | c | c | c | c |}
+            \hline
+            \rowcolor{Gray}
+            Κατηγορία & \emph{precision} & \emph{recall} & \emph{$F_1$ Score} & \emph{support}\\
+            αθλητικά & $96.9$ & $81.6$ & $88.6$ & $38$\\
+            πολιτική & $100.0$ & $18.4$ & $31.1$ & $38$\\
+            τεχνολογία & $29.7$ & $100.0$ & $45.8$ & $38$\\
+            \emph{gaming} & $92.9$ & $68.4$ & $78.8$ & $38$\\
+            ταινίες & $100.0$ & $42.1$ & $59.3$ & $38$\\
+            άλλο & $23.5$ & $10.5$ & $14.5$ & $38$\\
+            \hline
+            \hline
+            \multicolumn{1}{| c |}{\emph{macro avg}} & $73.8$ & $53.5$ & $53.0$ & $228$\\
+            \hline
+            \multicolumn{1}{| c |}{\emph{weighted avg}} & $73.8$ & $53.5$ & $53.0$ & $228$\\
+            \hline
+            \hline
+            \multicolumn{1}{| c |}{\emph{Accuracy}} & \multicolumn{4}{| c |}{$53.0$}\\
+            \hline
+        \end{tabular}
+        \label{tab:question-classification-bert}
+    \end{center}
+\end{table}

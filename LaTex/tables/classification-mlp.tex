@@ -1,0 +1,27 @@
+\begin{table}[!htb]
+    \captionsetup{justification=centering}
+    \begin{center}
+        \caption{Αποτελέσματα ταξινόμησης με το μοντέλο \emph{MLP}}
+        \begin{tabular}{ | c | c | c | c | c |}
+            \hline
+            \rowcolor{Gray}
+            Κατηγορία & \emph{precision} & \emph{recall} & \emph{$F_1$ Score} & \emph{support}\\
+            αθλητικά & $98.9$ & $99.8$ & $99.4$ & $656$\\
+            πολιτική & $98.9$ & $97.2$ & $98.0$ & $178$\\
+            τεχνολογία & $94.6$ & $98.1$ & $96.3$ & $160$\\
+            \emph{gaming} & $98.7$ & $96.1$ & $97.4$ & $153$\\
+            ταινίες & $99.3$ & $98.6$ & $99.0$ & $147$\\
+            άλλο & $97.0$ & $94.7$ & $95.9$ & $171$\\
+            \hline
+            \hline
+            \multicolumn{1}{| c |}{\emph{macro avg}} & $97.9$ & $97.4$ & $97.7$ & $1465$\\
+            \hline
+            \multicolumn{1}{| c |}{\emph{weighted avg}} & $98.2$ & $98.2$ & $98.2$ & $1465$\\
+            \hline
+            \hline
+            \multicolumn{1}{| c |}{\emph{Accuracy}} & \multicolumn{4}{| c |}{$98.2$}\\
+            \hline
+        \end{tabular}
+        \label{tab:classification-mlp}
+    \end{center}
+\end{table}
